@@ -33,28 +33,49 @@ class SearchAppBar extends StatelessWidget implements PreferredSizeWidget {
           ),
           child: Column(
               children: <Widget>[
-                Padding(
-                  padding: const EdgeInsets.only(top:50.0, left:20, right:100, bottom: 10),
-                  child: TextField(
-                    controller: myController,
-                    obscureText: false,
-                    decoration: InputDecoration(
-                      fillColor: Colors.white,
-                      filled: true,
-                      border: OutlineInputBorder(
-                        borderRadius: const BorderRadius.all(
-                          const Radius.circular(10.0),
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget>[
+                    Flexible(
+                      child: Padding(
+                        padding: const EdgeInsets.only(top:50.0, left:20, right:100, bottom: 10),
+                        child: TextField(
+                          controller: myController,
+                          obscureText: false,
+                          decoration: InputDecoration(
+                            fillColor: Colors.white,
+                            filled: true,
+                            border: OutlineInputBorder(
+                              borderRadius: const BorderRadius.all(
+                                const Radius.circular(10.0),
+                              ),
+                            ),
+                            labelText: 'Search Places',
+                            suffixIcon:IconButton(
+                              onPressed: (){
+                                Navigator.of(context).push(MaterialPageRoute(builder: (context) => UserSearch(searchContent: myController.text)));
+                              },
+                              icon:Icon(Icons.search),
+                            ),
+                          )
                         ),
                       ),
-                      labelText: 'Search Places',
-                      suffixIcon:IconButton(
-                        onPressed: (){
-                          Navigator.of(context).push(MaterialPageRoute(builder: (context) => UserSearch(searchContent: myController.text)));
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 30.0),
+                      child: IconButton(
+                        icon: Icon(Icons.person),
+                        color: Colors.white,
+                        splashColor: Colors.grey[100],
+                        onPressed: () {
+                          //TODO: Make this navigate to the login
+                          //Navigator.of(context).push()
+
                         },
-                        icon:Icon(Icons.search),
                       ),
-                    )
-                  ),
+                    ),
+                  ],
+
                 ),
                 Padding(
                   padding: const EdgeInsets.only(top:30.0),
