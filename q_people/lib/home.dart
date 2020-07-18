@@ -44,47 +44,40 @@ class _HomeState extends State<Home> {
     });
   }
 
-  @override
-  Widget build(BuildContext context) {
-    double width = MediaQuery.of(context).size.width;
-    double height = MediaQuery.of(context).size.height;
-    final myController = TextEditingController();
-    return Scaffold (
-      resizeToAvoidBottomInset: false,
-      backgroundColor: backgroundFlat,
 
-      appBar:
-      SearchAppBar(
-        title: '',
-        showBackButton: false,
-        showBar: false,
-      ),
+  Widget _buildAd() => Padding(
+    padding: const EdgeInsets.only(top: 530.0),
+    child: WhileYouWait(),
+  );
 
-      body: Container(
-          child: Stack(
-            children: <Widget>[
-              Container(
-                width: width,
-                height: height,
-                child: Column (
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: <Widget>[
-                    Container(
-                      height: 400,
-                      child: StreamBuilder(
-                          stream: Firestore.instance.collection(('bandname')).snapshots(),
-                          builder: (context, snapshot) {
-                            if (!snapshot.hasData) return const Text('Loading...');
+  Widget _buildCard() => Padding(
+    padding: const EdgeInsets.only(top: 130.0),
+    child: Container(
+        child: Stack(
+          children: <Widget>[
+            Container(
+              width: 400,
+              height: 400,
+              child: Column (
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: <Widget>[
+                  Container(
+                    height: 400,
+                    child: StreamBuilder(
+                        stream: Firestore.instance.collection(('bandname')).snapshots(),
+                        builder: (context, snapshot) {
+                          if (!snapshot.hasData) return const Text('Loading...');
 
-                            return ListView.builder(
-                              shrinkWrap: true,
-                              itemCount: snapshot.data.documents.length,
-                              itemBuilder: (context, index) {
-                                return HomeCard(shop: snapshot.data.documents[index], join: false, callback: callback);
-                              },
-                            );
-                          }),
+                          return ListView.builder(
+                            shrinkWrap: true,
+                            itemCount: snapshot.data.documents.length,
+                            itemBuilder: (context, index) {
+                              return HomeCard(shop: snapshot.data.documents[index], join: false, callback: callback);
+                            },
+                          );
+                        }
+                      ),
                     ),
                   ],
                 ),
@@ -92,11 +85,35 @@ class _HomeState extends State<Home> {
             ],
           )
 
+    ),
+  );
+
+  Widget _buildBackground() => new Scaffold(
+    appBar: SearchAppBar(
+      title: '',
+      showBackButton: false,
+      showBar: false,
+    ),
+  );
+
+
+  @override
+  Widget build(BuildContext context) {
+    List<Widget> children = new List();
+
+    children.add(_buildBackground());
+    children.add(_buildCard());
+    children.add(_buildAd());
+
+    return MaterialApp(
+      home: Stack(
+        children: children,
       ),
     );
   }
+
 }
-//TODO: Make this work with search reults by chanign the button text and action
+
 // TODO: Change Name
 class HomeCard extends StatefulWidget {
   DocumentSnapshot shop;
@@ -303,6 +320,54 @@ class DataBaseItems extends StatelessWidget {
                   _buildListItem(context, snapshot.data.documents[index]),
             );
           }),
+    );
+  }
+}
+
+class WhileYouWait extends StatelessWidget {
+
+
+  @override
+  Widget build(BuildContext context) {
+    return Center (
+      child: Container (
+        width: 350,
+        height: 190,
+        child: Card(
+          elevation: 20.0,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Padding(
+                padding: const EdgeInsets.all(12.0),
+                child: Text(
+                  "Try While You Wait",
+                style: TextStyle(
+                  fontSize: 22.0,
+                  fontWeight: FontWeight.w600,
+                ),
+                ),
+              ),
+              //SizedBox(height: 8,),
+              Center(
+                child: Container(
+                  width: 320,
+                  height: 115,
+
+                  child: Card(
+                    elevation: 10.0,
+                    child: Image.asset(
+                      "assets/images/game_ad.jpg",
+                      fit: BoxFit.fill,
+                    ),
+                  ),
+                ),
+              )
+            ],
+          ),
+
+        ),
+      ),
     );
   }
 }
