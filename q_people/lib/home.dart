@@ -7,9 +7,7 @@ import 'package:qpeople/shop.dart';
 import 'package:qpeople/confirmation.dart';
 import 'package:qpeople/constants.dart';
 import 'package:qpeople/searchappbar.dart';
-import 'authenticate.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-
 
 class Home extends StatefulWidget {
   @override
