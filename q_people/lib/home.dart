@@ -34,14 +34,7 @@ class _HomeState extends State<Home> {
     shops = [shop1, shop2, shop3, shop4];
 
   }
-
-  /* @override
-  void initState() {
-    super.initState();
-    feedPage = FeedPage(this.callback);
-
-    currentPage = feedPage;
-  } */
+  
 
   void callback(List updatedShops, Shop updatedShop ) {
     print(updatedShops);
@@ -56,45 +49,6 @@ class _HomeState extends State<Home> {
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
     final myController = TextEditingController();
-    /*return Material(
-      child: Row(
-        //crossAxisAlignment: CrossAxisAlignment.center,
-        //mainAxisAlignment: MainAxisAlignment.end,
-        children: <Widget>[
-          Flexible(
-            child: Padding(
-              padding: EdgeInsets.only(left: 20.0, top: 120.0,),
-              child: Container(
-                width: width - 100.0,
-                height: 1000,
-                child: TextField(
-                  controller: myController,
-                  obscureText: false,
-                  decoration: InputDecoration(
-                    fillColor: Colors.white,
-                    filled: true,
-                    border: OutlineInputBorder(
-                      borderRadius: const BorderRadius.all(
-                        const Radius.circular(30.0),
-                      ),
-                    ),
-                    labelText: 'Check Suburb Smoke Level ',
-                    suffixIcon:IconButton(
-                      onPressed: (){
-                        //TODO: Implement this to push to new screen
-                        //Navigator.of(context).push(MaterialPageRoute(builder: (context) => Suburb(suburb_name: myController.text,)));
-                      },
-                      color: Colors.black,
-                      icon:Icon(Icons.search),
-                    ),
-                  ),
-                ),
-              ),
-            ),
-          ),
-        ],
-      ),
-    ); */
     return Scaffold (
       resizeToAvoidBottomInset: false,
       backgroundColor: backgroundFlat,
@@ -118,15 +72,7 @@ class _HomeState extends State<Home> {
                   children: <Widget>[
                     Container(
                       height: 400,
-                      child: /*ListView.builder(
-                        shrinkWrap: true,
-                        itemCount: shops.length,
-                        itemBuilder: (context, index) {
-                          final shop = shops[index];
-                          return HomeCard(shop: shop, join: false, shopList: shops, index: index, callback: callback );
-                        },
-                      ), */
-                      StreamBuilder(
+                      child: StreamBuilder(
                           stream: Firestore.instance.collection(('bandname')).snapshots(),
                           builder: (context, snapshot) {
                             if (!snapshot.hasData) return const Text('Loading...');
@@ -136,7 +82,6 @@ class _HomeState extends State<Home> {
                               itemCount: snapshot.data.documents.length,
                               itemBuilder: (context, index) {
                                 return HomeCard(shop: snapshot.data.documents[index], join: false, callback: callback);
-                                //return _buildListItem(context, snapshot.data.documents[index]);
                               },
                             );
                           }),
@@ -304,45 +249,6 @@ class QueueLength extends StatelessWidget {
 
 
 
-Widget _buildListItem(BuildContext context, DocumentSnapshot document) {
-  String word = document['shop'];
-  String word2 = document['Qnumber'].toString();
-  print(word);
-  print(word2);
-  /*return ListTile(
-      title: Row(
-        children: <Widget>[
-          Expanded(
-            child: Text(
-              document['shop'],
-              style: Theme
-                  .of(context)
-                  .textTheme
-                  .headline6,
-            ),
-          ),
-          Container(
-            decoration: const BoxDecoration(
-                color: Color(0xffddddff)
-            ),
-            padding: const EdgeInsets.all(10.0),
-            child: Text(
-              document['Qnumber'].toString(),
-              style: Theme
-                  .of(context)
-                  .textTheme
-                  .headline6,
-            ),
-          )
-        ],
-      ),
-      onTap: () {
-        document.reference.updateData({
-          'Qnumber': document['Qnumber'] + 1
-        });
-      }
-  ); */
-}
 
 class DataBaseItems extends StatelessWidget {
   Widget _buildListItem(BuildContext context, DocumentSnapshot document) {
