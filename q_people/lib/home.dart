@@ -100,7 +100,8 @@ class _HomeState extends State<Home> {
       appBar:
       SearchAppBar(
         title: '',
-        showBack: false,
+        showBackButton: false,
+        showBar: false,
       ),
 
       body: Container(
@@ -113,41 +114,6 @@ class _HomeState extends State<Home> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: <Widget>[
-                  Flexible(
-                    child: Padding(
-                      padding: EdgeInsets.only(left: 20.0, top: 80.0,),
-                        child: Container(
-                          width: width - 150.0,
-                          height: 65,
-                          child: Card (
-                            elevation: 20.0,
-                            child: TextField(
-                                controller: myController,
-                                obscureText: false,
-                                decoration: InputDecoration(
-                                  fillColor: Colors.white,
-                                  filled: true,
-                                  border: OutlineInputBorder(
-                                    borderRadius: const BorderRadius.all(
-                                      const Radius.circular(5.0),
-                                    ),
-                                  ),
-                                  labelText: 'Search Places',
-                                  suffixIcon:IconButton(
-                                    onPressed: (){
-                                      //TODO: Implement this to push to new screen
-                                      //Navigator.of(context).push(MaterialPageRoute(builder: (context) => Suburb(suburb_name: myController.text,)));
-                                    },
-                                    color: Colors.black,
-                                    icon:Icon(Icons.search),
-                                  ),
-                                )
-                              ),
-                          ),
-                        ),
-                    ),
-                  ),
-
                   Container(
                     height: 400,
                     child: ListView.builder(

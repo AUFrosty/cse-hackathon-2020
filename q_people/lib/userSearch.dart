@@ -28,7 +28,8 @@ class _UserSearchState extends State<UserSearch> {
         backgroundColor: backgroundFlat,
         appBar: SearchAppBar(
           title: "Search Results for: " + widget.searchContent,
-          showBack: true,
+          showBackButton: true,
+          showBar: true,
 //          appBar: AppBar(),
 //          widgets: <Widget>[Icon(Icons.more_vert)],
         ),

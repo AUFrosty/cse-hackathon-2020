@@ -6,10 +6,11 @@ import 'package:qpeople/home.dart';
 class SearchAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String title;
   final AppBar appBar;
-  final bool showBack;
+  final bool showBackButton;
+  final bool showBar;
 //  final List<Widget> widgets;
 
-  const SearchAppBar({Key key, this.title, this.appBar, this.showBack}) //this.widgets})
+  const SearchAppBar({Key key, this.title, this.appBar, this.showBackButton, this.showBar}) //this.widgets})
       : super(key: key);
 
   @override
@@ -42,7 +43,7 @@ class SearchAppBar extends StatelessWidget implements PreferredSizeWidget {
                       filled: true,
                       border: OutlineInputBorder(
                         borderRadius: const BorderRadius.all(
-                          const Radius.circular(5.0),
+                          const Radius.circular(10.0),
                         ),
                       ),
                       labelText: 'Search Places',
@@ -57,7 +58,7 @@ class SearchAppBar extends StatelessWidget implements PreferredSizeWidget {
                 ),
                 Padding(
                   padding: const EdgeInsets.only(top:30.0),
-                  child: Container (
+                  child: showBar ? Container (
                     height:50,
                     color: Color(0x50552DC8),
 //
@@ -65,7 +66,7 @@ class SearchAppBar extends StatelessWidget implements PreferredSizeWidget {
                     children: <Widget>[
                       Padding(
                         padding: const EdgeInsets.only(left: 5.0, bottom: 5.0),
-                        child: showBack ? IconButton(
+                        child: showBackButton ? IconButton(
                                 onPressed: (){
                                   Navigator.of(context).push(MaterialPageRoute(builder: (context) => Home()));
                                 },
@@ -85,7 +86,7 @@ class SearchAppBar extends StatelessWidget implements PreferredSizeWidget {
                       ),
                       ]
                     ),
-                  ),
+                  ) :null,
                 ),
               ]
           ),
