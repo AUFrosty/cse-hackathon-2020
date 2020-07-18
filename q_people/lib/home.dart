@@ -288,3 +288,61 @@ class QueueLength extends StatelessWidget {
 
 
 }
+
+
+class DataBaseItems extends StatelessWidget {
+  Widget _buildListItem(BuildContext context, DocumentSnapshot document) {
+    return ListTile(
+        title: Row(
+          children: <Widget>[
+            Expanded(
+              child: Text(
+                document['shop'],
+                style: Theme
+                    .of(context)
+                    .textTheme
+                    .headline6,
+              ),
+            ),
+            Container(
+              decoration: const BoxDecoration(
+                  color: Color(0xffddddff)
+              ),
+              padding: const EdgeInsets.all(10.0),
+              child: Text(
+                document['Qnumber'].toString(),
+                style: Theme
+                    .of(context)
+                    .textTheme
+                    .headline6,
+              ),
+            )
+          ],
+        ),
+        onTap: () {
+          document.reference.updateData({
+            'Qnumber': document['Qnumber'] + 1
+          });
+        }
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Band Name'),
+      ),
+      body: StreamBuilder(
+          stream: Firestore.instance.collection(('bandname')).snapshots(),
+          builder: (context, snapshot) {
+            if (!snapshot.hasData) return const Text('Loading...');
+            return ListView.builder(
+              itemCount: snapshot.data.documents.length,
+              itemBuilder: (context, index) =>
+                  _buildListItem(context, snapshot.data.documents[index]),
+            );
+          }),
+    );
+  }
+}
