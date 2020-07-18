@@ -5,6 +5,7 @@ import 'package:qpeople/userSearch.dart';
 import 'package:qpeople/shopInfo.dart';
 import 'package:qpeople/shop.dart';
 import 'package:qpeople/confirmation.dart';
+import 'package:qpeople/constants.dart';
 import 'package:qpeople/searchappbar.dart';
 
 class UserSearch extends StatefulWidget {
@@ -24,8 +25,10 @@ class _UserSearchState extends State<UserSearch> {
     double height = MediaQuery.of(context).size.height;
 
     return Scaffold(
+        backgroundColor: backgroundFlat,
         appBar: SearchAppBar(
-          title: Text('title'),
+          title: "Search Results for: " + widget.searchContent,
+          showBack: true,
 //          appBar: AppBar(),
 //          widgets: <Widget>[Icon(Icons.more_vert)],
         ),

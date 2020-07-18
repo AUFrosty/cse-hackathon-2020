@@ -62,10 +62,12 @@ class _HomeState extends State<Home> {
     ); */
     return Scaffold (
       resizeToAvoidBottomInset: false,
+      backgroundColor: backgroundFlat,
 
       appBar:
       SearchAppBar(
-        title: Text('title'),
+        title: '',
+        showBack: false,
       ),
 
       body: Container(
