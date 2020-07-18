@@ -7,6 +7,8 @@ import 'package:qpeople/shop.dart';
 import 'package:qpeople/confirmation.dart';
 import 'package:qpeople/constants.dart';
 import 'package:qpeople/searchappbar.dart';
+import 'authenticate.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 
 class Home extends StatefulWidget {
@@ -105,31 +107,31 @@ class _HomeState extends State<Home> {
       ),
 
       body: Container(
-        child: Stack(
-          children: <Widget>[
-            Container(
-              width: width,
-              height: height,
-              child: Column (
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: <Widget>[
-                  Container(
-                    height: 400,
-                    child: ListView.builder(
-                      shrinkWrap: true,
-                      itemCount: shops.length,
-                      itemBuilder: (context, index) {
-                        final shop = shops[index];
-                        return HomeCard(shop: shop, join: false, shopList: shops, index: index, callback: callback );
-                      },
+          child: Stack(
+            children: <Widget>[
+              Container(
+                width: width,
+                height: height,
+                child: Column (
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: <Widget>[
+                    Container(
+                      height: 400,
+                      child: ListView.builder(
+                        shrinkWrap: true,
+                        itemCount: shops.length,
+                        itemBuilder: (context, index) {
+                          final shop = shops[index];
+                          return HomeCard(shop: shop, join: false, shopList: shops, index: index, callback: callback );
+                        },
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
-          ],
-        )
+            ],
+          )
 
       ),
     );
@@ -255,8 +257,8 @@ class QueueLength extends StatelessWidget {
               Text(
                 "${infront}",
                 style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 50.0
+                    color: Colors.white,
+                    fontSize: 50.0
                 ),
               ),
               Text(
