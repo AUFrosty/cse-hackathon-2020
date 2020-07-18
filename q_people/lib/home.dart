@@ -118,14 +118,28 @@ class _HomeState extends State<Home> {
                   children: <Widget>[
                     Container(
                       height: 400,
-                      child: ListView.builder(
+                      child: /*ListView.builder(
                         shrinkWrap: true,
                         itemCount: shops.length,
                         itemBuilder: (context, index) {
                           final shop = shops[index];
                           return HomeCard(shop: shop, join: false, shopList: shops, index: index, callback: callback );
                         },
-                      ),
+                      ), */
+                      StreamBuilder(
+                          stream: Firestore.instance.collection(('bandname')).snapshots(),
+                          builder: (context, snapshot) {
+                            if (!snapshot.hasData) return const Text('Loading...');
+
+                            return ListView.builder(
+                              shrinkWrap: true,
+                              itemCount: snapshot.data.documents.length,
+                              itemBuilder: (context, index) {
+                                return HomeCard(shop: snapshot.data.documents[index], join: false, callback: callback);
+                                //return _buildListItem(context, snapshot.data.documents[index]);
+                              },
+                            );
+                          }),
                     ),
                   ],
                 ),
@@ -140,13 +154,11 @@ class _HomeState extends State<Home> {
 //TODO: Make this work with search reults by chanign the button text and action
 // TODO: Change Name
 class HomeCard extends StatefulWidget {
-  Shop shop;
+  DocumentSnapshot shop;
   bool join;
-  List<Shop> shopList;
-  int index;
   Function callback;
 
-  HomeCard({this.shop, this.join, this.shopList, this.index, this.callback});
+  HomeCard({this.shop, this.join, this.callback});
 
   @override
   _HomeCardState createState() => _HomeCardState();
@@ -157,7 +169,7 @@ class _HomeCardState extends State<HomeCard> {
   @override
   Widget build(BuildContext context) {
     String buttonText;
-    print("${widget.shop.location}");
+    //print("${widget.shop.location}");
     if (widget.join) {
       buttonText = "Join Queue";
     } else {
@@ -180,14 +192,14 @@ class _HomeCardState extends State<HomeCard> {
                   Padding(
                     padding: const EdgeInsets.only(left: 20.0, top: 20),
                     child: Text(
-                      widget.shop.name,
+                      widget.shop['shop'],
                       style: cardHeading,
                     ),
                   ),
                   Padding(
                     padding: const EdgeInsets.only(left: 20.0,),
                     child: Text(
-                      widget.shop.location,
+                      widget.shop['shop'],
                       style: cardSubHeading,
                     ),
                   ),
@@ -202,8 +214,8 @@ class _HomeCardState extends State<HomeCard> {
                         borderRadius: BorderRadius.circular(5.0),
                       ),
                       onPressed: () {
-                        widget.shopList.removeAt(widget.index);
-                        widget.callback(widget.shopList, widget.shop);
+                        //widget.shopList.removeAt(widget.index);
+                        //widget.callback(widget.shopList, widget.shop);
 
                       },
                       child: Text(
@@ -217,7 +229,7 @@ class _HomeCardState extends State<HomeCard> {
               ),
               Padding(
                 padding: const EdgeInsets.only(right: 15.0, top: 20.0),
-                child: QueueLength(infront: widget.shop.curr_occupancy,),
+                child: QueueLength(infront: widget.shop['Qnumber']),
               ),
             ],
           ),
@@ -289,6 +301,48 @@ class QueueLength extends StatelessWidget {
 
 }
 
+
+
+
+Widget _buildListItem(BuildContext context, DocumentSnapshot document) {
+  String word = document['shop'];
+  String word2 = document['Qnumber'].toString();
+  print(word);
+  print(word2);
+  /*return ListTile(
+      title: Row(
+        children: <Widget>[
+          Expanded(
+            child: Text(
+              document['shop'],
+              style: Theme
+                  .of(context)
+                  .textTheme
+                  .headline6,
+            ),
+          ),
+          Container(
+            decoration: const BoxDecoration(
+                color: Color(0xffddddff)
+            ),
+            padding: const EdgeInsets.all(10.0),
+            child: Text(
+              document['Qnumber'].toString(),
+              style: Theme
+                  .of(context)
+                  .textTheme
+                  .headline6,
+            ),
+          )
+        ],
+      ),
+      onTap: () {
+        document.reference.updateData({
+          'Qnumber': document['Qnumber'] + 1
+        });
+      }
+  ); */
+}
 
 class DataBaseItems extends StatelessWidget {
   Widget _buildListItem(BuildContext context, DocumentSnapshot document) {
