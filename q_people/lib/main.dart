@@ -13,6 +13,7 @@ void main() => runApp(MaterialApp(
   routes: {
     //'/': (context) => Loading(),
     '/home': (context) => Home(),
+    '/userSearch': (context) => UserSearch(),
     //'/location': (context) => ChooseLocation(),
   },
 ));

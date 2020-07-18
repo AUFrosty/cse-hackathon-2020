@@ -11,9 +11,7 @@ const mediumCapacityEndColor = Color(0xfffde09a);
 const highCapacityStartColor = Color(0xfff88a93);
 const highCapacityEndColor = Color(0xfffcbaae);
 
-
-
-
+const backgroundFlat = Color(0xffF5F5F5);
 
 
 // Text Style

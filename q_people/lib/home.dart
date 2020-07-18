@@ -6,6 +6,7 @@ import 'package:qpeople/shopInfo.dart';
 import 'package:qpeople/shop.dart';
 import 'package:qpeople/confirmation.dart';
 import 'package:qpeople/constants.dart';
+import 'package:qpeople/searchappbar.dart';
 
 
 class Home extends StatefulWidget {
@@ -29,7 +30,23 @@ class _HomeState extends State<Home> {
     Shop shop3 = new Shop(name: "Testing 3", location: "789 Fake Street", curr_occupancy: 5, key: UniqueKey());
     Shop shop4 = new Shop(name: "Testing 3", location: "789 Fake Street", curr_occupancy: 5, key: UniqueKey());
     shops = [shop1, shop2, shop3, shop4];
-    //map1 = Map.fromIterable(shops, key: (e) => e.name, value: (e) => e.age);
+
+  }
+
+  /* @override
+  void initState() {
+    super.initState();
+    feedPage = FeedPage(this.callback);
+
+    currentPage = feedPage;
+  } */
+
+  void callback(List updatedShops, Shop updatedShop ) {
+    print(updatedShops);
+    setState(() {
+      updatedShop.curr_occupancy -= 1;
+      this.shops = updatedShops;
+    });
   }
 
   @override
@@ -78,19 +95,20 @@ class _HomeState extends State<Home> {
     ); */
     return Scaffold (
       resizeToAvoidBottomInset: false,
+      backgroundColor: backgroundFlat,
+
+      appBar:
+      SearchAppBar(
+        title: '',
+        showBack: false,
+      ),
+
       body: Container(
         child: Stack(
           children: <Widget>[
             Container(
               width: width,
               height: height,
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                    begin: Alignment.centerLeft,
-                    end: Alignment.centerRight,
-                    colors: [backgroundLeft, backgroundRight]
-                ),
-              ),
               child: Column (
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.start,
@@ -137,7 +155,7 @@ class _HomeState extends State<Home> {
                       itemCount: shops.length,
                       itemBuilder: (context, index) {
                         final shop = shops[index];
-                        return HomeCard(shop: shop, join: false, shopList: shops, index: index, );
+                        return HomeCard(shop: shop, join: false, shopList: shops, index: index, callback: callback );
                       },
                     ),
                   ),
@@ -158,7 +176,9 @@ class HomeCard extends StatefulWidget {
   bool join;
   List<Shop> shopList;
   int index;
-  HomeCard({this.shop, this.join, this.shopList, this.index});
+  Function callback;
+
+  HomeCard({this.shop, this.join, this.shopList, this.index, this.callback});
 
   @override
   _HomeCardState createState() => _HomeCardState();
@@ -214,12 +234,9 @@ class _HomeCardState extends State<HomeCard> {
                         borderRadius: BorderRadius.circular(5.0),
                       ),
                       onPressed: () {
-                        setState(() {
-                          widget.join = !widget.join;
-                          widget.shop.curr_occupancy -= 1;
-                          widget.shopList.removeAt(widget.index);
+                        widget.shopList.removeAt(widget.index);
+                        widget.callback(widget.shopList, widget.shop);
 
-                        });
                       },
                       child: Text(
                         buttonText,
