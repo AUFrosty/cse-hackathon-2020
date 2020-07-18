@@ -15,6 +15,23 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
 
+
+
+  List<Shop> shops;
+  var map1;
+
+  @override
+  void initState() {
+    super.initState();
+
+    Shop shop1 =  Shop(name: "Testing 1", location: "123 Fake Street", curr_occupancy: 1, key: UniqueKey());
+    Shop shop2 = new Shop(name: "Testing 2", location: "456 Fake Street", curr_occupancy: 10, key: UniqueKey());
+    Shop shop3 = new Shop(name: "Testing 3", location: "789 Fake Street", curr_occupancy: 5, key: UniqueKey());
+    Shop shop4 = new Shop(name: "Testing 3", location: "789 Fake Street", curr_occupancy: 5, key: UniqueKey());
+    shops = [shop1, shop2, shop3, shop4];
+    //map1 = Map.fromIterable(shops, key: (e) => e.name, value: (e) => e.age);
+  }
+
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
@@ -112,7 +129,18 @@ class _HomeState extends State<Home> {
                         ),
                     ),
                   ),
-                  HomeCard(shopName: "Testing Shop Name", shopLocation: "123 Fake Street",)
+
+                  Container(
+                    height: 400,
+                    child: ListView.builder(
+                      shrinkWrap: true,
+                      itemCount: shops.length,
+                      itemBuilder: (context, index) {
+                        final shop = shops[index];
+                        return HomeCard(shop: shop, join: false, shopList: shops, index: index, );
+                      },
+                    ),
+                  ),
                 ],
               ),
             ),
@@ -123,52 +151,155 @@ class _HomeState extends State<Home> {
     );
   }
 }
-
-class HomeCard extends StatelessWidget {
-  String shopName;
-  String shopLocation;
-  HomeCard({this.shopName, this.shopLocation});
+//TODO: Make this work with search reults by chanign the button text and action
+// TODO: Change Name
+class HomeCard extends StatefulWidget {
+  Shop shop;
+  bool join;
+  List<Shop> shopList;
+  int index;
+  HomeCard({this.shop, this.join, this.shopList, this.index});
 
   @override
+  _HomeCardState createState() => _HomeCardState();
+}
+
+
+class _HomeCardState extends State<HomeCard> {
+  @override
   Widget build(BuildContext context) {
+    String buttonText;
+    print("${widget.shop.location}");
+    if (widget.join) {
+      buttonText = "Join Queue";
+    } else {
+      buttonText = "Leave Queue";
+    }
+    //print(buttonText);
     return Center(
       child: Container(
-        width: 300,
+        width: 350,
         child: Card(
-          child: Column(
+          elevation: 20.0,
+          child: Row(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
-              ListTile(
-                title: Text(
-                  shopName,
-                  style: cardHeading,
-                ),
-                subtitle: Text(
-                  shopLocation,
-                  style: cardSubHeading,
-                ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Padding(
+                    padding: const EdgeInsets.only(left: 20.0, top: 20),
+                    child: Text(
+                      widget.shop.name,
+                      style: cardHeading,
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 20.0,),
+                    child: Text(
+                      widget.shop.location,
+                      style: cardSubHeading,
+                    ),
+                  ),
+                  SizedBox(height: 20,),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 20.0, bottom: 12.0),
+                    child: RaisedButton(
+                      elevation: 20.0,
+                      color: buttonColor,
+                      padding: EdgeInsets.all(12),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(5.0),
+                      ),
+                      onPressed: () {
+                        setState(() {
+                          widget.join = !widget.join;
+                          widget.shop.curr_occupancy -= 1;
+                          widget.shopList.removeAt(widget.index);
+
+                        });
+                      },
+                      child: Text(
+                        buttonText,
+                        style: buttonTextStyle,
+                      ),
+                    ),
+                  ),
+
+                ],
               ),
               Padding(
-                padding: const EdgeInsets.only(left: 20.0, bottom: 12.0),
-                child: RaisedButton(
-                  color: backgroundLeft,
-                  padding: EdgeInsets.all(12),
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(5.0),
-                  ),
-                  onPressed: () {},
-                  child: Text(
-                      'Leave Queue',
-                      style: buttonText,
-                  ),
-                ),
+                padding: const EdgeInsets.only(right: 15.0, top: 20.0),
+                child: QueueLength(infront: widget.shop.curr_occupancy,),
               ),
-
             ],
           ),
         ),
       ),
     );
   }
+}
+
+
+class QueueLength extends StatelessWidget {
+  int infront;
+  QueueLength({this.infront});
+
+  @override
+  Widget build(BuildContext context) {
+    Color startColor = lowCapacityStartColor;
+    Color endColor = lowCapacityEndColor;
+    if (infront > 9) {
+      startColor = highCapacityStartColor;
+      endColor = highCapacityEndColor;
+    } else if (infront > 4) {
+      startColor = mediumCapacityStartColor;
+      endColor = mediumCapacityEndColor;
+
+    }
+    return Container(
+      height: 100,
+      width: 100.0,
+
+      child: Card(
+        elevation: 20.0,
+        child: Container(
+          child: Column(
+            children: <Widget>[
+              SizedBox(height: 10,),
+              Text(
+                "${infront}",
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 50.0
+                ),
+              ),
+              Text(
+                "In Front",
+                style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 12.0
+                ),
+              )
+            ],
+          ),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(5.0),
+            gradient: LinearGradient(
+                begin: Alignment.bottomLeft,
+                end: Alignment.topRight,
+                colors: [startColor, endColor]
+            ),
+          ),
+
+        ),
+
+      ),
+    );
+
+  }
+
+
 }
