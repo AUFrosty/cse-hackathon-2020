@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "50760864975",
+    "firebase_url": "https://q-people-caa50.firebaseio.com",
+    "project_id": "q-people-caa50",
+    "storage_bucket": "q-people-caa50.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:50760864975:android:2806523b0869b6d09a53ba",
+        "android_client_info": {
+          "package_name": "com.example.qpeople"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "50760864975-8tn93pdmjhfkkditg11sm8a0u3dj89pt.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBL1_GsP2pvcKn1TYTwiEb5ySCZyNuSr78"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "50760864975-8tn93pdmjhfkkditg11sm8a0u3dj89pt.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
