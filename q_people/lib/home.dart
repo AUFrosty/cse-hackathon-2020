@@ -66,6 +66,7 @@ class _HomeState extends State<Home> {
     for (var i in qShot.documents) {
       if (i['shop'] == shopName) {
         i.reference.updateData({"Qnumber":  q});
+        i.reference.updateData({"status": false});
       }
     }
     print(snapshot);
@@ -226,7 +227,7 @@ class _HomeCardState extends State<HomeCard> {
               ),
               Padding(
                 padding: const EdgeInsets.only(right: 15.0, top: 20.0),
-                child: QueueLength(infront: widget.shop['Qnumber']),
+                child: QueueLength(infront: widget.shop['Qnumber'], status: widget.shop['status'], ),
               ),
             ],
           ),
@@ -239,12 +240,17 @@ class _HomeCardState extends State<HomeCard> {
 
 class QueueLength extends StatelessWidget {
   int infront;
-  QueueLength({this.infront});
+  bool status;
+  QueueLength({this.infront, this.status});
 
   @override
   Widget build(BuildContext context) {
     Color startColor = lowCapacityStartColor;
     Color endColor = lowCapacityEndColor;
+    String queueLengthMessage = "Current Waiting";
+    if (this.status) {
+      queueLengthMessage = "In Front";
+    }
     if (infront > 9) {
       startColor = highCapacityStartColor;
       endColor = highCapacityEndColor;
@@ -253,6 +259,7 @@ class QueueLength extends StatelessWidget {
       endColor = mediumCapacityEndColor;
 
     }
+
     return Container(
       height: 100,
       width: 100.0,
@@ -271,7 +278,7 @@ class QueueLength extends StatelessWidget {
                 ),
               ),
               Text(
-                "In Front",
+                queueLengthMessage,
                 style: TextStyle(
                     color: Colors.white,
                     fontSize: 12.0
