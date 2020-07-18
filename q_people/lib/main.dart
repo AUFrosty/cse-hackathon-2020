@@ -5,11 +5,11 @@ import 'package:qpeople/userSearch.dart';
 import 'package:qpeople/shopInfo.dart';
 import 'package:qpeople/shop.dart';
 import 'package:qpeople/confirmation.dart';
-import 'package:qpeople/sign_in.dart';
+import 'login.dart';
 
 
 void main() => runApp(MaterialApp(
-  initialRoute: '/home',
+  initialRoute: '/login',
   routes: {
     //'/': (context) => Loading(),
     '/home': (context) => Home(),
