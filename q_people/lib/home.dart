@@ -6,6 +6,7 @@ import 'package:qpeople/shopInfo.dart';
 import 'package:qpeople/shop.dart';
 import 'package:qpeople/confirmation.dart';
 import 'package:qpeople/constants.dart';
+import 'package:qpeople/searchappbar.dart';
 
 
 class Home extends StatefulWidget {
@@ -61,57 +62,22 @@ class _HomeState extends State<Home> {
     ); */
     return Scaffold (
       resizeToAvoidBottomInset: false,
+
+      appBar:
+      SearchAppBar(
+        title: Text('title'),
+      ),
+
       body: Container(
         child: Stack(
           children: <Widget>[
             Container(
               width: width,
               height: height,
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                    begin: Alignment.centerLeft,
-                    end: Alignment.centerRight,
-                    colors: [backgroundLeft, backgroundRight]
-                ),
-              ),
               child: Column (
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: <Widget>[
-                  Flexible(
-                    child: Padding(
-                      padding: EdgeInsets.only(left: 20.0, top: 80.0,),
-                        child: Container(
-                          width: width - 150.0,
-                          height: 65,
-                          child: Card (
-                            elevation: 20.0,
-                            child: TextField(
-                                controller: myController,
-                                obscureText: false,
-                                decoration: InputDecoration(
-                                  fillColor: Colors.white,
-                                  filled: true,
-                                  border: OutlineInputBorder(
-                                    borderRadius: const BorderRadius.all(
-                                      const Radius.circular(5.0),
-                                    ),
-                                  ),
-                                  labelText: 'Search Places',
-                                  suffixIcon:IconButton(
-                                    onPressed: (){
-                                      //TODO: Implement this to push to new screen
-                                      //Navigator.of(context).push(MaterialPageRoute(builder: (context) => Suburb(suburb_name: myController.text,)));
-                                    },
-                                    color: Colors.black,
-                                    icon:Icon(Icons.search),
-                                  ),
-                                )
-                              ),
-                          ),
-                        ),
-                    ),
-                  ),
                   HomeCard(shopName: "Testing Shop Name", shopLocation: "123 Fake Street",)
                 ],
               ),

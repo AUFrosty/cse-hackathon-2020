@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
 // Colors
-const backgroundLeft = Color(0xff703aea);
-const backgroundRight = Color(0xffa345f0);
+const backgroundLeft = Color(0xffc6638E9);
+const backgroundRight = Color(0xffcA546F0);
 
 
 // Text Style
