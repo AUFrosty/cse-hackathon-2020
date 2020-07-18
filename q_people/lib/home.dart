@@ -49,67 +49,20 @@ class _HomeState extends State<Home> {
     });
   }
 
-  @override
-  Widget build(BuildContext context) {
-    double width = MediaQuery.of(context).size.width;
-    double height = MediaQuery.of(context).size.height;
-    final myController = TextEditingController();
-    /*return Material(
-      child: Row(
-        //crossAxisAlignment: CrossAxisAlignment.center,
-        //mainAxisAlignment: MainAxisAlignment.end,
-        children: <Widget>[
-          Flexible(
-            child: Padding(
-              padding: EdgeInsets.only(left: 20.0, top: 120.0,),
-              child: Container(
-                width: width - 100.0,
-                height: 1000,
-                child: TextField(
-                  controller: myController,
-                  obscureText: false,
-                  decoration: InputDecoration(
-                    fillColor: Colors.white,
-                    filled: true,
-                    border: OutlineInputBorder(
-                      borderRadius: const BorderRadius.all(
-                        const Radius.circular(30.0),
-                      ),
-                    ),
-                    labelText: 'Check Suburb Smoke Level ',
-                    suffixIcon:IconButton(
-                      onPressed: (){
-                        //TODO: Implement this to push to new screen
-                        //Navigator.of(context).push(MaterialPageRoute(builder: (context) => Suburb(suburb_name: myController.text,)));
-                      },
-                      color: Colors.black,
-                      icon:Icon(Icons.search),
-                    ),
-                  ),
-                ),
-              ),
-            ),
-          ),
-        ],
-      ),
-    ); */
-    return Scaffold (
-      resizeToAvoidBottomInset: false,
-      backgroundColor: backgroundFlat,
 
-      appBar:
-      SearchAppBar(
-        title: '',
-        showBackButton: false,
-        showBar: false,
-      ),
+  Widget _buildAd() => Padding(
+    padding: const EdgeInsets.only(top: 530.0),
+    child: WhileYouWait(),
+  );
 
-      body: Container(
+  Widget _buildCard() => Padding(
+    padding: const EdgeInsets.only(top: 130.0),
+    child: Container(
         child: Stack(
           children: <Widget>[
             Container(
-              width: width,
-              height: height,
+              width: 400,
+              height: 400,
               child: Column (
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.start,
@@ -131,11 +84,35 @@ class _HomeState extends State<Home> {
           ],
         )
 
+    ),
+  );
+
+  Widget _buildBackground() => new Scaffold(
+    appBar: SearchAppBar(
+      title: '',
+      showBackButton: false,
+      showBar: false,
+    ),
+  );
+
+
+  @override
+  Widget build(BuildContext context) {
+    List<Widget> children = new List();
+
+    children.add(_buildBackground());
+    children.add(_buildCard());
+    children.add(_buildAd());
+
+    return MaterialApp(
+      home: Stack(
+        children: children,
       ),
     );
   }
+
 }
-//TODO: Make this work with search reults by chanign the button text and action
+
 // TODO: Change Name
 class HomeCard extends StatefulWidget {
   Shop shop;
@@ -284,5 +261,56 @@ class QueueLength extends StatelessWidget {
 
   }
 
+
+}
+
+
+class WhileYouWait extends StatelessWidget {
+
+
+  @override
+  Widget build(BuildContext context) {
+    return Center (
+      child: Container (
+        width: 350,
+        height: 190,
+        child: Card(
+          elevation: 20.0,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Padding(
+                padding: const EdgeInsets.all(12.0),
+                child: Text(
+                  "Try While You Wait",
+                style: TextStyle(
+                  fontSize: 22.0,
+                  fontWeight: FontWeight.w600,
+                ),
+                ),
+              ),
+              //SizedBox(height: 8,),
+              Center(
+                child: Container(
+                  width: 320,
+                  height: 115,
+
+                  child: Card(
+                    elevation: 10.0,
+                    child: Image.asset(
+                      "assets/images/game_ad.jpg",
+                      fit: BoxFit.fill,
+                    ),
+                  ),
+                ),
+              )
+            ],
+          ),
+
+        ),
+      ),
+    );
+  }
+  
 
 }
