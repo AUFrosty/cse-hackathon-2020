@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'shopInfo.dart';
+import 'package:qpeople/home.dart';
 
 class SignIn extends StatefulWidget {
   @override
@@ -64,7 +65,7 @@ class _SignInState extends State<SignIn> {
 
     //button widget
     Widget _button(String text, Color splashColor, Color highlightColor,
-        Color fillColor, Color textColor, void function()) {
+        Color fillColor, Color textColor, void function(), String email, String password, String displayName, bool login) {
       return RaisedButton(
         highlightElevation: 0.0,
         splashColor: splashColor,
@@ -79,6 +80,25 @@ class _SignInState extends State<SignIn> {
               fontWeight: FontWeight.bold, color: textColor, fontSize: 20),
         ),
         onPressed: () {
+          //TODO: Check login credentials
+          //TODO: IF login matches a set criteria then the user is taken to the shop view else they are taken to the home page
+          print("email = $email");
+          print("password = $password");
+          print("display name = $displayName");
+          print("login = $login");
+          if (login && email == "manager" && password == 'manager') {
+            Navigator.of(context).pushAndRemoveUntil(
+              MaterialPageRoute(builder: (BuildContext context) => shopInfo()),
+              ModalRoute.withName('/shopInfo'),
+            );
+
+          } else if (login) {
+            Navigator.of(context).pushAndRemoveUntil(
+              MaterialPageRoute(builder: (BuildContext context) => Home()),
+              ModalRoute.withName('/home'),
+            );
+
+          }
           function();
         },
       );
@@ -192,8 +212,18 @@ class _SignInState extends State<SignIn> {
                               right: 20,
                               bottom: MediaQuery.of(context).viewInsets.bottom),
                           child: Container(
-                            child: _button("LOGIN", Colors.white, primary,
-                                primary, Colors.white, _loginUser),
+                            child: _button(
+                              "LOGIN",
+                              Colors.white,
+                              primary,
+                              primary,
+                              Colors.white,
+                              _loginUser,
+                              _emailController.text,
+                              _passwordController.text,
+                              _displayName,
+                              true,
+                            ),
                             height: 50,
                             width: MediaQuery.of(context).size.width,
                           ),
@@ -331,7 +361,10 @@ class _SignInState extends State<SignIn> {
                             bottom: MediaQuery.of(context).viewInsets.bottom),
                         child: Container(
                           child: _button("REGISTER", Colors.white, primary,
-                              primary, Colors.white, _registerUser),
+                              primary, Colors.white, _registerUser, _emailController.text,
+                            _passwordController.text,
+                            _displayName,
+                            true,),
                           height: 50,
                           width: MediaQuery.of(context).size.width,
                         ),
@@ -361,7 +394,10 @@ class _SignInState extends State<SignIn> {
             Padding(
               child: Container(
                 child: _button("LOGIN", primary, Colors.white, Colors.white,
-                    primary, _loginSheet),
+                    primary, _loginSheet, _emailController.text,
+                  _passwordController.text,
+                  _displayName,
+                  false,),
                 height: 50,
               ),
               padding: EdgeInsets.only(top: 80, left: 20, right: 20),
