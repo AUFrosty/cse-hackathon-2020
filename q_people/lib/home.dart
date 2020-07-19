@@ -34,11 +34,44 @@ class _HomeState extends State<Home> {
   }
   
 
-  void callback(List updatedShops, Shop updatedShop ) {
-    print(updatedShops);
+  callback(AsyncSnapshot<dynamic> snapshot, int index, String shopName)  async {
+    //print(updatedShops);
+    int q = 0;
+    int qNum = 0;
+
+    Future<void> func() async {
+      Firestore.instance.collection('bandname').where('shop', isEqualTo: shopName)
+          .snapshots().forEach((element) {
+        q = (element.documents[0]['Qnumber']) - 1;
+        //element.documents[0].reference.updateData({"Qnumber":  q});
+      }); //
+    }
+    func();
+    //await print(q);
+
+    //..listen((data)  {q = (data.documents[0]['Qnumber']);});
+
+    // ignore: cancel_subscriptions
+    //var Qnumber = Firestore.instance.collection('bandname').where('shop', isEqualTo: shopName)
+    //    .snapshots().listen((data) => data.documents[0]['Qnumber']);
+
+
+
+    //print("{$Qnumber}");
+    //print("{$q}");
+
+    QuerySnapshot qShot = await Firestore.instance.collection('bandname').getDocuments();
+    for (var i in qShot.documents) {
+      if (i['shop'] == shopName) {
+        i.reference.updateData({"Qnumber":  q});
+        i.reference.updateData({"status": false});
+      }
+    }
+    print(snapshot);
     setState(() {
-      updatedShop.curr_occupancy -= 1;
-      this.shops = updatedShops;
+      Firestore.instance.runTransaction((Transaction myTransaction) async {
+        await myTransaction.delete(snapshot.data.documents[index].reference);
+      });
     });
   }
 
@@ -63,7 +96,7 @@ class _HomeState extends State<Home> {
                   Container(
                     height: 400,
                     child: StreamBuilder(
-                        stream: Firestore.instance.collection(('bandname')).snapshots(),
+                        stream: Firestore.instance.collection(('personal')).snapshots(),
                         builder: (context, snapshot) {
                           if (!snapshot.hasData) return const Text('Loading...');
 
@@ -71,7 +104,7 @@ class _HomeState extends State<Home> {
                             shrinkWrap: true,
                             itemCount: snapshot.data.documents.length,
                             itemBuilder: (context, index) {
-                              return HomeCard(shop: snapshot.data.documents[index], join: false, callback: callback);
+                              return HomeCard(shops: snapshot, shop: snapshot.data.documents[index], index: index, join: false, callback: callback);
                             },
                           );
                         }
@@ -117,8 +150,10 @@ class HomeCard extends StatefulWidget {
   DocumentSnapshot shop;
   bool join;
   Function callback;
+  AsyncSnapshot<dynamic> shops;
+  int index;
 
-  HomeCard({this.shop, this.join, this.callback});
+  HomeCard({this.shops, this.index, this.shop, this.join, this.callback});
 
   @override
   _HomeCardState createState() => _HomeCardState();
@@ -128,6 +163,7 @@ class HomeCard extends StatefulWidget {
 class _HomeCardState extends State<HomeCard> {
   @override
   Widget build(BuildContext context) {
+    print(widget.shop['shop']);
     String buttonText;
     //print("${widget.shop.location}");
     if (widget.join) {
@@ -159,7 +195,7 @@ class _HomeCardState extends State<HomeCard> {
                   Padding(
                     padding: const EdgeInsets.only(left: 20.0,),
                     child: Text(
-                      widget.shop['shop'],
+                      widget.shop['address'],
                       style: cardSubHeading,
                     ),
                   ),
@@ -175,7 +211,7 @@ class _HomeCardState extends State<HomeCard> {
                       ),
                       onPressed: () {
                         //widget.shopList.removeAt(widget.index);
-                        //widget.callback(widget.shopList, widget.shop);
+                        widget.callback(widget.shops, widget.index, widget.shop['shop']);
 
                       },
                       child: Text(
@@ -189,7 +225,7 @@ class _HomeCardState extends State<HomeCard> {
               ),
               Padding(
                 padding: const EdgeInsets.only(right: 15.0, top: 20.0),
-                child: QueueLength(infront: widget.shop['Qnumber']),
+                child: QueueLength(infront: widget.shop['Qnumber'], status: widget.shop['status'], ),
               ),
             ],
           ),
@@ -202,12 +238,17 @@ class _HomeCardState extends State<HomeCard> {
 
 class QueueLength extends StatelessWidget {
   int infront;
-  QueueLength({this.infront});
+  bool status;
+  QueueLength({this.infront, this.status});
 
   @override
   Widget build(BuildContext context) {
     Color startColor = lowCapacityStartColor;
     Color endColor = lowCapacityEndColor;
+    String queueLengthMessage = "Current Waiting";
+    if (this.status) {
+      queueLengthMessage = "In Front";
+    }
     if (infront > 9) {
       startColor = highCapacityStartColor;
       endColor = highCapacityEndColor;
@@ -216,6 +257,7 @@ class QueueLength extends StatelessWidget {
       endColor = mediumCapacityEndColor;
 
     }
+
     return Container(
       height: 100,
       width: 100.0,
@@ -234,7 +276,7 @@ class QueueLength extends StatelessWidget {
                 ),
               ),
               Text(
-                "In Front",
+                queueLengthMessage,
                 style: TextStyle(
                     color: Colors.white,
                     fontSize: 12.0
