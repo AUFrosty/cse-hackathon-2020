@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'shopInfo.dart';
 import 'package:qpeople/home.dart';
+import 'package:qpeople/constants.dart';
+import 'package:qpeople/searchappbar.dart';
+
 
 class SignIn extends StatefulWidget {
   @override
@@ -19,7 +22,7 @@ class _SignInState extends State<SignIn> {
 
   @override
   Widget build(BuildContext context) {
-    Color primary = Theme.of(context).primaryColor;
+    Color primary = buttonColor;
     void initState() {
       super.initState();
     }
@@ -28,6 +31,7 @@ class _SignInState extends State<SignIn> {
     Widget _input(Icon icon, String hint, TextEditingController controller,
         bool obsecure) {
       return Container(
+
         padding: EdgeInsets.only(left: 20, right: 20),
         child: TextField(
           controller: controller,
@@ -41,20 +45,20 @@ class _SignInState extends State<SignIn> {
               enabledBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(30),
                 borderSide: BorderSide(
-                  color: Theme.of(context).primaryColor,
+                  color: buttonColor,
                   width: 2,
                 ),
               ),
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(30),
                 borderSide: BorderSide(
-                  color: Theme.of(context).primaryColor,
+                  color: buttonColor,
                   width: 3,
                 ),
               ),
               prefixIcon: Padding(
                 child: IconTheme(
-                  data: IconThemeData(color: Theme.of(context).primaryColor),
+                  data: IconThemeData(color: buttonColor),
                   child: icon,
                 ),
                 padding: EdgeInsets.only(left: 30, right: 10),
@@ -148,7 +152,7 @@ class _SignInState extends State<SignIn> {
                             icon: Icon(
                               Icons.close,
                               size: 30.0,
-                              color: Theme.of(context).primaryColor,
+                              color: buttonColor,
                             ),
                           ),
                         )
@@ -172,7 +176,7 @@ class _SignInState extends State<SignIn> {
                                     height: 130,
                                     decoration: BoxDecoration(
                                         shape: BoxShape.circle,
-                                        color: Theme.of(context).primaryColor),
+                                        color: buttonColor),
                                   ),
                                   alignment: Alignment.center,
                                 ),
@@ -272,7 +276,7 @@ class _SignInState extends State<SignIn> {
                             icon: Icon(
                               Icons.close,
                               size: 30.0,
-                              color: Theme.of(context).primaryColor,
+                              color: buttonColor,
                             ),
                           ),
                         )
@@ -295,7 +299,7 @@ class _SignInState extends State<SignIn> {
                                   height: 130,
                                   decoration: BoxDecoration(
                                       shape: BoxShape.circle,
-                                      color: Theme.of(context).primaryColor),
+                                      color: buttonColor),
                                 ),
                                 alignment: Alignment.center,
                               ),
@@ -388,61 +392,77 @@ class _SignInState extends State<SignIn> {
     return Scaffold(
         resizeToAvoidBottomPadding: false,
         key: _scaffoldKey,
-        backgroundColor: Theme.of(context).primaryColor,
-        body: Column(
-          children: <Widget>[
-            Padding(
-              child: Container(
-                child: _button("LOGIN", primary, Colors.white, Colors.white,
-                    primary, _loginSheet, _emailController.text,
-                  _passwordController.text,
-                  _displayName,
-                  false,),
-                height: 50,
-              ),
-              padding: EdgeInsets.only(top: 80, left: 20, right: 20),
+        //backgroundColor: buttonColor,
+
+        body: Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.bottomLeft,
+              end: Alignment.topRight, // 10% of the width, so there are ten blinds.
+              colors: [
+                Color(0xffc6638E9),
+                Color(0xffcA546F0)
+              ], // whitish to gray
+              tileMode: TileMode
+                  .repeated, // repeats the gradient over the canvas
             ),
-            Padding(
-              child: Container(
-                child: OutlineButton(
-                  highlightedBorderColor: Colors.white,
-                  borderSide: BorderSide(color: Colors.white, width: 2.0),
-                  highlightElevation: 0.0,
-                  splashColor: Colors.white,
-                  highlightColor: Theme.of(context).primaryColor,
-                  color: Theme.of(context).primaryColor,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: new BorderRadius.circular(30.0),
-                  ),
-                  child: Text(
-                    "REGISTER",
-                    style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
-                        fontSize: 20),
-                  ),
-                  onPressed: () {
-                    _registerSheet();
-                  },
+          ),
+          child: Column(
+
+            children: <Widget>[
+              Padding(
+                child: Container(
+                  child: _button("LOGIN", primary, Colors.white, Colors.white,
+                      primary, _loginSheet, _emailController.text,
+                    _passwordController.text,
+                    _displayName,
+                    false,),
+                  height: 50,
                 ),
-                height: 50,
+                padding: EdgeInsets.only(top: 80, left: 20, right: 20),
               ),
-              padding: EdgeInsets.only(top: 10, left: 20, right: 20),
-            ),
-            Expanded(
-              child: Align(
-                child: ClipPath(
-                  child: Container(
-                    color: Colors.white,
-                    height: 300,
+              Padding(
+                child: Container(
+                  child: OutlineButton(
+                    highlightedBorderColor: Colors.white,
+                    borderSide: BorderSide(color: Colors.white, width: 2.0),
+                    highlightElevation: 0.0,
+                    splashColor: Colors.white,
+                    highlightColor: buttonColor,
+                    color: buttonColor,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: new BorderRadius.circular(30.0),
+                    ),
+                    child: Text(
+                      "REGISTER",
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                          fontSize: 20),
+                    ),
+                    onPressed: () {
+                      _registerSheet();
+                    },
                   ),
+                  height: 50,
+                ),
+                padding: EdgeInsets.only(top: 10, left: 20, right: 20),
+              ),
+              Expanded(
+                child: Align(
+                  child: ClipPath(
+                    child: Container(
+                      color: Colors.white,
+                      height: 300,
+                    ),
 //                  clipper: BottomWaveClipper(),
+                  ),
+                  alignment: Alignment.bottomCenter,
                 ),
-                alignment: Alignment.bottomCenter,
-              ),
-            )
-          ],
-          crossAxisAlignment: CrossAxisAlignment.stretch,
+              )
+            ],
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+          ),
         ));
   }
 }

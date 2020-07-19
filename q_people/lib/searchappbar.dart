@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:qpeople/userSearch.dart';
 import 'package:qpeople/home.dart';
+import 'package:qpeople/login.dart';
 
 
 class SearchAppBar extends StatelessWidget implements PreferredSizeWidget {
@@ -69,7 +70,7 @@ class SearchAppBar extends StatelessWidget implements PreferredSizeWidget {
                         splashColor: Colors.grey[100],
                         onPressed: () {
                           //TODO: Make this navigate to the login
-                          //Navigator.of(context).push()
+                          Navigator.of(context).push(MaterialPageRoute(builder: (context) => SignIn()));
 
                         },
                       ),

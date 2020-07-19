@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:qpeople/constants.dart';
 import 'package:qpeople/loading.dart';
 import 'package:qpeople/home.dart';
 import 'package:qpeople/userSearch.dart';
@@ -23,7 +24,7 @@ class shopInfo extends StatelessWidget {
                   width: 60.0,
                   decoration: new BoxDecoration(
                       borderRadius: new BorderRadius.circular(50.0),
-                      color: Color(0xFF18D191)),
+                      color: buttonColor),
                   child: new Icon(
                     Icons.image,
                     color: Colors.white,
@@ -44,7 +45,7 @@ class shopInfo extends StatelessWidget {
               ],
             ),
             Row(
-
+              mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
 
                 Container(
@@ -52,11 +53,11 @@ class shopInfo extends StatelessWidget {
                   width: 120.0,
                   decoration: new BoxDecoration(
                       borderRadius: new BorderRadius.circular(80.0),
-                      color: Color(0xFF18D191)),
+                      color: buttonColor),
                   alignment: AlignmentDirectional.center,
                   child: Text(
                     "16",
-                    style: new TextStyle(fontSize: 30.0, ),
+                    style: new TextStyle(fontSize: 30.0, color: Colors.white ),
                   ),
                 ),
               ],
@@ -72,7 +73,7 @@ class shopInfo extends StatelessWidget {
                           alignment: Alignment.center,
                           height: 60.0,
                           decoration: new BoxDecoration(
-                              color: Color(0xFF18D191),
+                              color: buttonColor,
                               borderRadius: new BorderRadius.circular(9.0)),
                           child: new Text("ShopA Details",
                               style: new TextStyle(
@@ -92,7 +93,7 @@ class shopInfo extends StatelessWidget {
                         alignment: Alignment.center,
                         height: 60.0,
                         decoration: new BoxDecoration(
-                            color: Color(0xFF4364A1),
+                            color: buttonColor,
                             borderRadius: new BorderRadius.circular(9.0)),
                         child: new Text("MINUS -",
                             style: new TextStyle(
@@ -107,7 +108,7 @@ class shopInfo extends StatelessWidget {
                         alignment: Alignment.center,
                         height: 60.0,
                         decoration: new BoxDecoration(
-                            color: Color(0xFF4364A1),
+                            color: buttonColor,
                             borderRadius: new BorderRadius.circular(9.0)),
                         child: new Text("ADD +",
                             style: new TextStyle(

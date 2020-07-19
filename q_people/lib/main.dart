@@ -9,7 +9,7 @@ import 'login.dart';
 
 
 void main() => runApp(MaterialApp(
-  initialRoute: '/login',
+  initialRoute: '/home',
   routes: {
     //'/': (context) => Loading(),
     '/home': (context) => Home(),
